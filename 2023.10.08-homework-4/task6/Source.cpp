@@ -40,6 +40,7 @@ int main(int argc, char**)
 			break;
 		}
 	}
+
 	int p_max = 0;
 	for (int i = n - 1; i >= 0; --i)
 	{
