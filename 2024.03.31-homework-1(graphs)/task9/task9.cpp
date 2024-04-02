@@ -22,13 +22,9 @@ public:
 	CGraph();
 	CGraph(int vertexes, int edges);
 	~CGraph();
-	///âûâîäèò ìàòðèöó ñìåæíîñòè ãðàôà
 	void PrintMatrix();
-	///âûâîäèò äóãè ãðàôà
 	void PrintEdges();
-	///ñ÷èòûâàåò ìàòðèöó ñìåæíîñòè ãðàôà
 	void ReadMatrix(int vertexes, std::istream& stream);
-	///ñ÷èòûâàåò äóãè ãðàôà
 	void ReadEdges(int edges, bool haveweight = false);
 	int edgesCount();
 	int roadsCount();
@@ -39,24 +35,19 @@ public:
 	int progenitor(int a, int b, int e);
 	int CountEgesfromVertex(int vertex);
 	void getIndexesUnitedVertex(int vertex);
-	
+	void adjacencyList(int vertex);
 
 private:
-	///ñîçäàåò ìàòðèöó ñìåæíîñòè n*n è ìàòðèöó ñ äóãàìè ðàçìåðà m
+	
 	void init();
-	///ñîçäàåò ìàòðèöó ñìåæíîñòè _vertexes*_vertexes
 	void initMatrix();
-	///ñîçäàåò ìàòðèöó ìàòðèöó ñ äóãàìè ðàçìåðà _edges
 	void initEdges();
 	void initMatrixFromEdges();
 	void initEdgesFromMatrix();
 	int getVertexesCountFromEdges();
 	int getEdgesCountFromMatrix();
-	///óäàëÿåò ìàòðèöó ñìåæíîñòè è ìàòðèöó ñ äóãàìè
 	void dispose();
-	///óäàëÿåò ìàòðèöó ñìåæíîñòè
 	void disposeMatrix();
-	///óäàëÿåò ìàòðèöó ñ äóãàìè
 	void disposeEdges();
 
 
@@ -69,7 +60,9 @@ private:
 int main(int argc, char* argv[])
 {
 	CGraph graph;
-	
+	int v = 0;
+	std::cin >> v;
+	graph.adjacencyList(v);
 	return EXIT_SUCCESS;
 }
 
@@ -352,13 +345,13 @@ int CGraph::progenitor(int a, int b, int e)
 	}
 	return a / 2;
 }
-int CGraph::CountEgesfromVertex(int vertex) 
+int CGraph::CountEgesfromVertex(int vertex)
 {
 	int c = 0;
 	initMatrixFromEdges();
 	for (int i = 0; i < vertexCount(); ++i)
 	{
-		c += (_matrix[vertex][i]!=0);
+		c += (_matrix[vertex + 1][i] != 0);
 	}
 	return c;
 }
@@ -366,11 +359,29 @@ int CGraph::CountEgesfromVertex(int vertex)
 void CGraph::getIndexesUnitedVertex(int vertex)
 {
 	int i = 0;
-	for (int j = 0; j < vertex; ++j) 
+	for (int j = 0; j < vertexCount(); ++j)
 	{
-		if (_matrix[vertex][j] != 0) 
+		if (_matrix[vertex + 1][j] != 0)
 		{
 			std::cout << j << " ";
 		}
 	}
+}
+void CGraph::adjacencyList(int vertex) 
+{
+	_vertexes = vertex;
+	initMatrix();
+	for (int i = 0; i < vertex; ++i)
+	{
+		int roads = 0;
+		std::cin >> roads;
+		for (int j = 0; j < roads; ++j)
+		{
+			int k=0;
+			std::cin >> k;
+			_matrix[i][k] = 1;
+		}
+
+	}
+	PrintMatrix();
 }

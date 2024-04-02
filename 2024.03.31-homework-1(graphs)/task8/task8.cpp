@@ -39,7 +39,6 @@ public:
 	int progenitor(int a, int b, int e);
 	int CountEgesfromVertex(int vertex);
 	void getIndexesUnitedVertex(int vertex);
-	
 
 private:
 	///ñîçäàåò ìàòðèöó ñìåæíîñòè n*n è ìàòðèöó ñ äóãàìè ðàçìåðà m
@@ -69,7 +68,20 @@ private:
 int main(int argc, char* argv[])
 {
 	CGraph graph;
-	
+	int v = 0;
+	std::cin >> v;
+	int c = 0;
+	std::cin >> c;
+	graph.ReadEdges(c);
+
+	std::cout << v;
+	std::cout << std::endl;
+	for (int i = 0; i < v; ++i)
+	{
+		std::cout << graph.CountEgesfromVertex(i) << " ";
+		graph.getIndexesUnitedVertex(i);
+		std::cout << std::endl;
+	}
 	return EXIT_SUCCESS;
 }
 
@@ -352,13 +364,13 @@ int CGraph::progenitor(int a, int b, int e)
 	}
 	return a / 2;
 }
-int CGraph::CountEgesfromVertex(int vertex) 
+int CGraph::CountEgesfromVertex(int vertex)
 {
 	int c = 0;
 	initMatrixFromEdges();
 	for (int i = 0; i < vertexCount(); ++i)
 	{
-		c += (_matrix[vertex][i]!=0);
+		c += (_matrix[vertex+1][i] != 0);
 	}
 	return c;
 }
@@ -366,9 +378,9 @@ int CGraph::CountEgesfromVertex(int vertex)
 void CGraph::getIndexesUnitedVertex(int vertex)
 {
 	int i = 0;
-	for (int j = 0; j < vertex; ++j) 
+	for (int j = 0; j < vertexCount(); ++j)
 	{
-		if (_matrix[vertex][j] != 0) 
+		if (_matrix[vertex+1][j] != 0)
 		{
 			std::cout << j << " ";
 		}

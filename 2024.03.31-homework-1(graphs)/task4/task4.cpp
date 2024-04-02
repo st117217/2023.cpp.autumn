@@ -35,6 +35,7 @@ public:
 	int power(int vertex);
 	int countWrongRoads();
 	void paintVertex(int colour, int vert);
+	void travelRing(int vertexes);
 
 private:
 	///ñîçäàåò ìàòðèöó ñìåæíîñòè n*n è ìàòðèöó ñ äóãàìè ðàçìåðà m
@@ -64,16 +65,10 @@ private:
 int main(int argc, char* argv[])
 {
 	CGraph graph;
-	int vertex = 0;
-	std::cin >> vertex;
-	graph.ReadMatrix(vertex, std::cin);
-	for (int i = 1; i <= vertex; ++i)
-	{
-		int colour = 0;
-		std::cin >> colour;
-		graph.paintVertex(colour, i);
-	}
-	std::cout << graph.countWrongRoads();
+	int v = 0;
+	std::cin >> v;
+	graph.ReadMatrix(v,std::cin);
+	graph.travelRing(v);
 	return EXIT_SUCCESS;
 }
 
@@ -335,4 +330,26 @@ void CGraph::paintVertex(int colour, int vert)
 		}
 	}
 	initMatrixFromEdges();
+}
+void CGraph::travelRing(int vertexes)
+{
+	_vertexes = vertexes;
+	int minDist = 10000000;
+
+	for (int i = 0; i < _vertexes; ++i)
+	{
+		for (int j = 0; j < _vertexes; ++j)
+		{
+			for (int k = 0; k < _vertexes; ++k)
+			{
+				if (i != j && j != k && k != i)
+				{
+					int dist = _matrix[i][j] + _matrix[j][k] + _matrix[k][i];
+					minDist = std::min(minDist, dist);
+				}
+			}
+		}
+	}
+
+	std::cout << minDist;
 }

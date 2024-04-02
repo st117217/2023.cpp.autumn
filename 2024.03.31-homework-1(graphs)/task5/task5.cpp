@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
 	std::cin >> a;
 	int b = 0;
 	std::cin >> b;
-	std::cout<< graph.progenitor(a, b,e);
+	std::cout<< graph.progenitor(a, b, e);
 
 	return EXIT_SUCCESS;
 }
