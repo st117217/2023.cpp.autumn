@@ -37,6 +37,8 @@ public:
 	int countWrongRoads();
 	void paintVertex(int colour, int vert);
 	int progenitor(int a, int b, int e);
+	int CountEgesfromVertex(int vertex);
+	void getIndexesUnitedVertex(int vertex);
 
 private:
 	///ñîçäàåò ìàòðèöó ñìåæíîñòè n*n è ìàòðèöó ñ äóãàìè ðàçìåðà m
@@ -66,14 +68,21 @@ private:
 int main(int argc, char* argv[])
 {
 	CGraph graph;
-	int e = 0;
-	std::cin >> e;
-	int a = 0;
-	std::cin >> a;
-	int b = 0;
-	std::cin >> b;
-	std::cout<< graph.progenitor(a, b,e);
+	int v = 0;
+	std::cin >> v;
+	int c = 0;
+	std::cin >> c;
+	graph.ReadEdges(c);
+	graph.PrintMatrix();
 
+	std::cout << v;
+	std::cout << std::endl;
+	for (int  i = 0; i < v; ++i)
+	{
+		std::cout << graph.CountEgesfromVertex(i) << " ";
+		graph.getIndexesUnitedVertex(i);
+		std::cout<< std::endl;
+	}
 	return EXIT_SUCCESS;
 }
 
@@ -103,9 +112,9 @@ void CGraph::PrintMatrix()
 		}
 		initMatrixFromEdges();
 	}
-	for (int i = 0; i < _vertexes; ++i)
+	for (int i = 1; i < _vertexes; ++i)
 	{
-		for (int j = 0; j < _vertexes; ++j)
+		for (int j = 1; j < _vertexes; ++j)
 		{
 			std::cout << _matrix[i][j] << " ";
 		}
@@ -338,7 +347,7 @@ void CGraph::paintVertex(int colour, int vert)
 }
 int CGraph::progenitor(int a, int b, int e)
 {
-	if (a > (std::pow(2, e)) || b > (std::pow(2, e))) 
+	if (a > (std::pow(2, e)) || b > (std::pow(2, e)))
 	{
 		return 0;
 	}
@@ -355,4 +364,26 @@ int CGraph::progenitor(int a, int b, int e)
 		b /= 2;
 	}
 	return a / 2;
+}
+int CGraph::CountEgesfromVertex(int vertex) 
+{
+	int c = 0;
+	initMatrixFromEdges();
+	for (int i = 0; i < vertexCount(); ++i)
+	{
+		c += (_matrix[vertex][i]!=0);
+	}
+	return c;
+}
+
+void CGraph::getIndexesUnitedVertex(int vertex)
+{
+	int i = 0;
+	for (int j = 0; j < vertex; ++j) 
+	{
+		if (_matrix[vertex][j] != 0) 
+		{
+			std::cout << j << " ";
+		}
+	}
 }
