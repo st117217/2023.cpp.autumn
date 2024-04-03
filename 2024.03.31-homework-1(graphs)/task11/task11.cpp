@@ -1,4 +1,4 @@
-﻿#include<iostream>
+#include<iostream>
 #include<cmath>
 
 struct SEdge {
@@ -62,7 +62,23 @@ int main(int argc, char* argv[])
 	CGraph graph;
 	int v = 0;
 	std::cin >> v;
-	graph.adjacencyList(v);
+	graph.ReadMatrix(v, std::cin);
+	bool c = true;
+	for (int i = 0; i < v; ++i)
+	{
+		if (graph.power(i) != graph.power(0))
+		{
+			c = false;
+		}
+	}
+	if(c)
+	{
+		std::cout << "YES";
+	}
+	else
+	{
+		std::cout << "NO";
+	}
 	return EXIT_SUCCESS;
 }
 
@@ -92,9 +108,9 @@ void CGraph::PrintMatrix()
 		}
 		initMatrixFromEdges();
 	}
-	for (int i = 0; i < _vertexes-1; ++i)
+	for (int i = 0; i < _vertexes - 1; ++i)
 	{
-		for (int j = 0; j < _vertexes-1; ++j)
+		for (int j = 0; j < _vertexes - 1; ++j)
 		{
 			std::cout << _matrix[i][j] << " ";
 		}
@@ -369,7 +385,7 @@ void CGraph::getIndexesUnitedVertex(int vertex)
 }
 void CGraph::adjacencyList(int vertex)
 {
-	_vertexes = vertex+1;
+	_vertexes = vertex + 1;
 	initMatrix();
 	for (int i = 0; i < vertex; ++i)
 	{
@@ -379,7 +395,7 @@ void CGraph::adjacencyList(int vertex)
 		{
 			int k = 0;
 			std::cin >> k;
-			_matrix[i][k-1] = 1;
+			_matrix[i][k - 1] = 1;
 		}
 	}
 	PrintMatrix();

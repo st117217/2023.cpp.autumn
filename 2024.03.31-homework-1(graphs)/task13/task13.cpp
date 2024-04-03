@@ -1,4 +1,4 @@
-﻿#include<iostream>
+#include<iostream>
 #include<cmath>
 
 struct SEdge {
@@ -36,6 +36,8 @@ public:
 	int CountEgesfromVertex(int vertex);
 	void getIndexesUnitedVertex(int vertex);
 	void adjacencyList(int vertex);
+	bool orientedMatrixOrNot();
+	bool fullGraphOrNot(int vertex);
 
 private:
 
@@ -62,7 +64,20 @@ int main(int argc, char* argv[])
 	CGraph graph;
 	int v = 0;
 	std::cin >> v;
-	graph.adjacencyList(v);
+	int g = 0;
+	std::cin >> g;
+
+	graph.ReadEdges(g);
+	if (graph.fullGraphOrNot(v) == true) 
+	{
+		std::cout << "YES";
+
+	}
+	else
+	{
+		std::cout << "NO";
+	}
+
 	return EXIT_SUCCESS;
 }
 
@@ -92,9 +107,9 @@ void CGraph::PrintMatrix()
 		}
 		initMatrixFromEdges();
 	}
-	for (int i = 0; i < _vertexes-1; ++i)
+	for (int i = 1; i < _vertexes; ++i)
 	{
-		for (int j = 0; j < _vertexes-1; ++j)
+		for (int j = 1; j < _vertexes; ++j)
 		{
 			std::cout << _matrix[i][j] << " ";
 		}
@@ -369,7 +384,7 @@ void CGraph::getIndexesUnitedVertex(int vertex)
 }
 void CGraph::adjacencyList(int vertex)
 {
-	_vertexes = vertex+1;
+	_vertexes = vertex + 1;
 	initMatrix();
 	for (int i = 0; i < vertex; ++i)
 	{
@@ -379,8 +394,59 @@ void CGraph::adjacencyList(int vertex)
 		{
 			int k = 0;
 			std::cin >> k;
-			_matrix[i][k-1] = 1;
+			_matrix[i][k - 1] = 1;
 		}
 	}
 	PrintMatrix();
+}
+bool CGraph::orientedMatrixOrNot()
+{
+	if (_matrix == nullptr)
+	{
+		initMatrixFromEdges();
+	}
+	bool orient = true;
+	for (int i = 0; i < _vertexes; ++i)
+	{
+		for (int j = 0; j < _vertexes; ++j)
+		{
+			if ((_matrix[i][j] == 1) && (_matrix[j][i] != 1))
+			{
+				orient = false;
+			}
+		}
+	}
+	return orient;
+}
+bool CGraph::fullGraphOrNot(int vertex) 
+{
+	_vertexes = vertex;
+	
+	if (_matrix == nullptr)
+	{
+		initMatrixFromEdges();
+	}
+
+	int c = vertex;
+	for (int i = 0; i < _vertexes; ++i)
+		for (int j = 0; j < _vertexes; ++j) {
+			{
+				if (_matrix[i][j] == 1 || _matrix[j][i] == 1)
+				{
+					_matrix[i][j] = 1;
+					_matrix[j][i] = 1;
+				}
+			}
+		}
+	for (int i = 0; i < _vertexes; ++i)
+		for (int j = 0; j < _vertexes; ++j) {
+			{
+				if (_matrix[i][j] == 1 || _matrix[j][i] == 1)
+				{
+					c += 1;
+				}
+			}
+		}
+	
+	return (c/vertex)==vertex;
 }

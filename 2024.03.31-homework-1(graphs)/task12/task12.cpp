@@ -1,4 +1,4 @@
-﻿#include<iostream>
+#include<iostream>
 #include<cmath>
 
 struct SEdge {
@@ -36,6 +36,7 @@ public:
 	int CountEgesfromVertex(int vertex);
 	void getIndexesUnitedVertex(int vertex);
 	void adjacencyList(int vertex);
+	bool orientedMatrixOrNot();
 
 private:
 
@@ -62,7 +63,16 @@ int main(int argc, char* argv[])
 	CGraph graph;
 	int v = 0;
 	std::cin >> v;
-	graph.adjacencyList(v);
+	graph.ReadMatrix(v,std::cin);
+	if(graph.orientedMatrixOrNot()==true)
+	{
+		std::cout << "NO";
+	}
+	else
+	{
+		std::cout << "YES";
+	}
+
 	return EXIT_SUCCESS;
 }
 
@@ -92,9 +102,9 @@ void CGraph::PrintMatrix()
 		}
 		initMatrixFromEdges();
 	}
-	for (int i = 0; i < _vertexes-1; ++i)
+	for (int i = 0; i < _vertexes - 1; ++i)
 	{
-		for (int j = 0; j < _vertexes-1; ++j)
+		for (int j = 0; j < _vertexes - 1; ++j)
 		{
 			std::cout << _matrix[i][j] << " ";
 		}
@@ -369,7 +379,7 @@ void CGraph::getIndexesUnitedVertex(int vertex)
 }
 void CGraph::adjacencyList(int vertex)
 {
-	_vertexes = vertex+1;
+	_vertexes = vertex + 1;
 	initMatrix();
 	for (int i = 0; i < vertex; ++i)
 	{
@@ -379,8 +389,27 @@ void CGraph::adjacencyList(int vertex)
 		{
 			int k = 0;
 			std::cin >> k;
-			_matrix[i][k-1] = 1;
+			_matrix[i][k - 1] = 1;
 		}
 	}
 	PrintMatrix();
+}
+bool CGraph::orientedMatrixOrNot() 
+{
+	if (_matrix == nullptr) 
+	{
+	initMatrixFromEdges();
+	}
+	bool orient = true;
+	for (int i = 0; i < _vertexes; ++i) 
+	{
+		for (int j = 0; j < _vertexes; ++j)
+		{
+			if ((_matrix[i][j]==1) && (_matrix[j][i]!=1)) 
+			{
+				orient = false;
+			}
+		}
+	}
+	return orient;
 }
